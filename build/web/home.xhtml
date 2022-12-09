@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    <div>
+                        <img src="https://www.mspace.co.ke/img/new-mspace-logo.jpeg" style="width:200px;"/>
+                       
+                        
+                    </div>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                    Footer
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="175" header="Left" collapsible="true">
+                    <p:menu>
+                        <p:submenu label="Resources">
+                            <p:menuitem value="Demo" url="http://www.primefaces.org/showcase-labs/ui/home.jsf" />
+                            <p:menuitem value="Documentation" url="http://www.primefaces.org/documentation.html" />
+                            <p:menuitem value="Forum" url="http://forum.primefaces.org/" />
+                            <p:menuitem value="Themes" url="http://www.primefaces.org/themes.html" />
+
+                        </p:submenu>
+
+                    </p:menu>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form>
+                    <div>
+                        <h:outputLabel for="username" value="Username"/>
+                        <p:inputText id="username" value="#{user.clientname}" style="padding: 10px 5px;" />
+                    </div>
+                    
+                    <div>
+                        <h:outputLabel for="password" value="Password"/>
+                        <p:inputText id="password" value="#{user.clientpassword}" style="padding: 10px 5px;" />
+                    </div>
+                    
+                    <div>
+                        <h:outputLabel for="sms-credits" value="Sms Credits"/>
+                        <p:inputText id="sms-credits" value="#{user.smsCredits}" style="padding: 10px 5px;" />
+                    </div>
+                    
+                    <div>
+                        <h:outputLabel for="organisation" value="Organization"/>
+                        <p:inputText id="organisation" value="#{user.organisation}" style="padding: 10px 5px;" />
+                    </div>
+                    
+                    <div>
+                        <h:outputLabel for="user-type" value="User Type"/>
+                        <p:inputText id="user-type" value="#{user.userType}" style="padding: 10px 5px;" />
+                    </div>
+                    
+                    <div>
+                        <h:outputLabel for="user-mobile" value="User Mobile"/>
+                        <p:inputText id="user-mobile" value="#{user.userMobile}" style="padding: 10px 5px;" />
+                    </div>
+                    
+                    <div>
+                        <h:outputLabel for="user-email" value="User Email"/>
+                        <p:inputText id="user-email" value="#{user.userEmail}" style="padding: 10px 5px;" />
+                        
+                    </div>
+                    
+<p:commandButton value="Sign In" action="#{user.sendData()}" />
+</h:form>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+
