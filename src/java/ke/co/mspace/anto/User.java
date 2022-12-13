@@ -138,41 +138,41 @@ public class User {
     }
 
 
-//    public String login() throws ClassNotFoundException, SQLException {
-//
-//        System.out.println("username is " + username);
-//        String query = "SELECT * FROM user_acc";
-//        String dbUsername = null;
-//        String dbPassword = null;
-//
-//        try {
-//            ps = database.getConnection().prepareStatement(query);
-//            result = ps.executeQuery();
-//            while (result.next()) {
-//                dbUsername = result.getString("username");
-//                dbPassword = result.getString("password");
-//            }
-//            System.out.println(dbUsername);
-//            System.out.println(dbPassword);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            database.getConnection().close();
-//            System.out.println("connection closed");
-//        }
-//        if (username.equals(dbUsername) && password.equals(dbPassword)) {
-//            System.out.println("user logged in");
-//            return "home.xhtml";
-//        } else {
-//            System.out.println("user not logged in ");
-//            GrowlView growl = new GrowlView();
-//            growl.showError();
-//            System.out.println("step by step");
-////            FacesContext.getCurrentInstance().
-////                addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "done", "done"));
-//            return "index.xhtml";
-//        }
-//    }
+    public String login() throws ClassNotFoundException, SQLException {
+
+        System.out.println("username is " + username);
+        String query = "SELECT * FROM user_acc";
+        String dbUsername = null;
+        String dbPassword = null;
+
+        try {
+            ps = database.getConnection().prepareStatement(query);
+            result = ps.executeQuery();
+            while (result.next()) {
+                dbUsername = result.getString("username");
+                dbPassword = result.getString("password");
+            }
+            System.out.println(dbUsername);
+            System.out.println(dbPassword);
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            database.getConnection().close();
+            System.out.println("connection closed");
+        }
+        if (username.equals(dbUsername) && password.equals(dbPassword)) {
+            System.out.println("user logged in");
+            return "home.xhtml";
+        } else {
+            System.out.println("user not logged in ");
+            GrowlView growl = new GrowlView();
+            growl.showError();
+            System.out.println("step by step");
+//            FacesContext.getCurrentInstance().
+//                addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "done", "done"));
+            return "index.xhtml";
+        }
+    }
 
     
     

@@ -27,7 +27,6 @@ import util.Database;
 public class SendData {
 
     static Database database = new Database();
-    static PreparedStatement ps;
     static ResultSet result;
     static ResultSet data;
     Connection connection;
