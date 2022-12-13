@@ -20,8 +20,8 @@
                 <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
                     <div>
                         <img src="https://www.mspace.co.ke/img/new-mspace-logo.jpeg" style="width:200px;"/>
-                       
-                        
+
+
                     </div>
                 </p:layoutUnit>
 
@@ -44,45 +44,69 @@
 
                 <p:layoutUnit position="center">
                     <h:form>
-                    <div>
-                        <h:outputLabel for="username" value="Username"/>
-                        <p:inputText id="username" value="#{user.clientname}" style="padding: 10px 5px;" />
-                    </div>
-                    
-                    <div>
-                        <h:outputLabel for="password" value="Password"/>
-                        <p:inputText id="password" value="#{user.clientpassword}" style="padding: 10px 5px;" />
-                    </div>
-                    
-                    <div>
-                        <h:outputLabel for="sms-credits" value="Sms Credits"/>
-                        <p:inputText id="sms-credits" value="#{user.smsCredits}" style="padding: 10px 5px;" />
-                    </div>
-                    
-                    <div>
-                        <h:outputLabel for="organisation" value="Organization"/>
-                        <p:inputText id="organisation" value="#{user.organisation}" style="padding: 10px 5px;" />
-                    </div>
-                    
-                    <div>
-                        <h:outputLabel for="user-type" value="User Type"/>
-                        <p:inputText id="user-type" value="#{user.userType}" style="padding: 10px 5px;" />
-                    </div>
-                    
-                    <div>
-                        <h:outputLabel for="user-mobile" value="User Mobile"/>
-                        <p:inputText id="user-mobile" value="#{user.userMobile}" style="padding: 10px 5px;" />
-                    </div>
-                    
-                    <div>
-                        <h:outputLabel for="user-email" value="User Email"/>
-                        <p:inputText id="user-email" value="#{user.userEmail}" style="padding: 10px 5px;" />
-                        
-                    </div>
-                    
-<p:commandButton value="Sign In" action="#{user.sendData()}" />
-</h:form>
+                        <div class="card">
+                            <p:dataTable var="product" value="#{sendData.users}">
+                                <p:column headerText="UserName">
+                                    <h:outputText value="#{product.clientname}" />
+                                </p:column>
+
+                                <p:column headerText="Password">
+                                    <h:outputText value="#{product.clientpassword}" />
+                                </p:column>
+
+                                <p:column headerText="Organisation">
+                                    <h:outputText value="#{product.organisation}" />
+                                </p:column>
+
+                                <p:column headerText="Email">
+                                    <h:outputText value="#{product.userEmail}" />
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </h:form>
                 </p:layoutUnit>
+                <!--
+                                <p:layoutUnit position="center">
+                                    <h:form>
+                                    <div>
+                                        <h:outputLabel for="username" value="Username"/>
+                                        <p:inputText id="username" value="#{user.clientname}" style="padding: 10px 5px;" />
+                                    </div>
+                                    
+                                    <div>
+                                        <h:outputLabel for="password" value="Password"/>
+                                        <p:inputText id="password" value="#{user.clientpassword}" style="padding: 10px 5px;" />
+                                    </div>
+                                    
+                                    <div>
+                                        <h:outputLabel for="sms-credits" value="Sms Credits"/>
+                                        <p:inputText id="sms-credits" value="#{user.smsCredits}" style="padding: 10px 5px;" />
+                                    </div>
+                                    
+                                    <div>
+                                        <h:outputLabel for="organisation" value="Organization"/>
+                                        <p:inputText id="organisation" value="#{user.organisation}" style="padding: 10px 5px;" />
+                                    </div>
+                                    
+                                    <div>
+                                        <h:outputLabel for="user-type" value="User Type"/>
+                                        <p:inputText id="user-type" value="#{user.userType}" style="padding: 10px 5px;" />
+                                    </div>
+                                    
+                                    <div>
+                                        <h:outputLabel for="user-mobile" value="User Mobile"/>
+                                        <p:inputText id="user-mobile" value="#{user.userMobile}" style="padding: 10px 5px;" />
+                                    </div>
+                                    
+                                    <div>
+                                        <h:outputLabel for="user-email" value="User Email"/>
+                                        <p:inputText id="user-email" value="#{user.userEmail}" style="padding: 10px 5px;" />
+                                        
+                                    </div>
+                                    
+                <p:commandButton value="Sign In" action="#{user.sendData()}" />
+                </h:form>
+                                </p:layoutUnit>-->
 
             </p:layout>
 

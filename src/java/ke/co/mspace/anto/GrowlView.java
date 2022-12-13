@@ -22,10 +22,10 @@ public class GrowlView {
     public void addMessage(FacesMessage.Severity severity, String summary, String detail) {
         FacesContext.getCurrentInstance().
                 addMessage(null, new FacesMessage(severity, summary, detail));
-        System.out.println("error");
+        System.out.println("errorr");
     }
 
     public void showError() {
-        addMessage(FacesMessage.SEVERITY_ERROR, "Error Message", "Message Content");
+        addMessage(FacesMessage.SEVERITY_ERROR, "Sign in Error", "Username or Password not found");
     }
 }

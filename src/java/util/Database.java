@@ -5,6 +5,7 @@
  */
 package util;
 
+
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -19,11 +20,15 @@ import java.util.logging.Logger;
 public class Database {
     private Connection conn = null;
     
-    public Connection Database() throws ClassNotFoundException {
+    public Connection getConnection(){
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+            }
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mspace", "mysql", "mysql123");
-        } catch (SQLException ex) {
+        } catch (SQLException ex ) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
         return conn;
