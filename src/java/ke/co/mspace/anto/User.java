@@ -5,6 +5,7 @@
  */
 package ke.co.mspace.anto;
 
+import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,9 +23,9 @@ import util.Database;
  *
  * @author developer
  */
-@ManagedBean
+@ManagedBean(name="user")
 @SessionScoped
-public class User {
+public class User implements Serializable{
 
     static Database database = new Database();
     static PreparedStatement ps = null;
@@ -36,16 +37,27 @@ public class User {
     private String password;
     private String clientname;
     private String clientpassword;
-    private String smsCredits;
+    private int smsCredits;
     private String organisation;
     private String userType;
     private int userMobile;
     private String userEmail;
 
     public User() {
+        
     }
 
-    public User(String username, String password, String clientname, String clientpassword, String smsCredits, String organisation, String userType, String userEmail, int userMobile) {
+    public User(String clientname, String clientpassword, int smsCredits, String organisation, String userType, int userMobile, String userEmail) {
+        this.clientname = clientname;
+        this.clientpassword = clientpassword;
+        this.smsCredits = smsCredits;
+        this.organisation = organisation;
+        this.userType = userType;
+        this.userMobile = userMobile;
+        this.userEmail = userEmail;
+    }
+    
+    public User(String username, String password, String clientname, String clientpassword, int smsCredits, String organisation, String userType, String userEmail, int userMobile) {
         this.username = username;
         this.password = password;
         this.clientname = clientname;
@@ -97,11 +109,11 @@ public class User {
         this.clientpassword = clientpassword;
     }
 
-    public String getSmsCredits() {
+    public int getSmsCredits() {
         return smsCredits;
     }
 
-    public void setSmsCredits(String smsCredits) {
+    public void setSmsCredits(int smsCredits) {
         this.smsCredits = smsCredits;
     }
 
@@ -139,59 +151,24 @@ public class User {
 
 
     public String login() throws ClassNotFoundException, SQLException {
-
-        System.out.println("username is " + username);
-        String query = "SELECT * FROM user_acc";
-        String dbUsername = null;
-        String dbPassword = null;
-
-        try {
-            ps = database.getConnection().prepareStatement(query);
-            result = ps.executeQuery();
-            while (result.next()) {
-                dbUsername = result.getString("username");
-                dbPassword = result.getString("password");
-            }
-            System.out.println(dbUsername);
-            System.out.println(dbPassword);
-        } catch (SQLException ex) {
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            database.getConnection().close();
-            System.out.println("connection closed");
-        }
-        if (username.equals(dbUsername) && password.equals(dbPassword)) {
-            System.out.println("user logged in");
-            return "home.xhtml";
-        } else {
-            System.out.println("user not logged in ");
-            GrowlView growl = new GrowlView();
-            growl.showError();
-            System.out.println("step by step");
-//            FacesContext.getCurrentInstance().
-//                addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "done", "done"));
-            return "index.xhtml";
-        }
+        Login loginUser = new Login();
+        return loginUser.login();
     }
 
     
     
-//    public ResultSet findUsername() throws SQLException{
-//        String personName = null;
-//        String query = "SELECT * FROM client_info";
-//        try {
-//            ps = database.Database().prepareStatement(query);
-//             data = ps.executeQuery();
-//            while(result.next()){
-//                personName = result.getString("username");
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        System.out.println("query done");
-//        System.out.println(data);
-//        System.out.println(personName);
-//        return result;
-//    }
-//    
+    public ResultSet findUsername() throws SQLException{
+        String personName = null;
+        String query = "SELECT * FROM client_info";
+        ps = database.getConnection().prepareStatement(query);
+        data = ps.executeQuery();
+        while(result.next()){
+            personName = result.getString("username");
+        }
+        System.out.println("query done");
+        System.out.println(data);
+        System.out.println(personName);
+        return result;
+    }
+    
 }

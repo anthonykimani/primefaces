@@ -44,6 +44,7 @@
 
                 <p:layoutUnit position="center">
                     <h:form>
+                        <p:commandButton value="Register User" type="button" onclick="PF('dlg2').show();" /> 
                         <div class="card">
                             <p:dataTable var="product" value="#{sendData.users}">
                                 <p:column headerText="UserName">
@@ -65,48 +66,50 @@
                         </div>
                     </h:form>
                 </p:layoutUnit>
-                <!--
-                                <p:layoutUnit position="center">
-                                    <h:form>
-                                    <div>
-                                        <h:outputLabel for="username" value="Username"/>
-                                        <p:inputText id="username" value="#{user.clientname}" style="padding: 10px 5px;" />
-                                    </div>
-                                    
-                                    <div>
-                                        <h:outputLabel for="password" value="Password"/>
-                                        <p:inputText id="password" value="#{user.clientpassword}" style="padding: 10px 5px;" />
-                                    </div>
-                                    
-                                    <div>
-                                        <h:outputLabel for="sms-credits" value="Sms Credits"/>
-                                        <p:inputText id="sms-credits" value="#{user.smsCredits}" style="padding: 10px 5px;" />
-                                    </div>
-                                    
-                                    <div>
-                                        <h:outputLabel for="organisation" value="Organization"/>
-                                        <p:inputText id="organisation" value="#{user.organisation}" style="padding: 10px 5px;" />
-                                    </div>
-                                    
-                                    <div>
-                                        <h:outputLabel for="user-type" value="User Type"/>
-                                        <p:inputText id="user-type" value="#{user.userType}" style="padding: 10px 5px;" />
-                                    </div>
-                                    
-                                    <div>
-                                        <h:outputLabel for="user-mobile" value="User Mobile"/>
-                                        <p:inputText id="user-mobile" value="#{user.userMobile}" style="padding: 10px 5px;" />
-                                    </div>
-                                    
-                                    <div>
-                                        <h:outputLabel for="user-email" value="User Email"/>
-                                        <p:inputText id="user-email" value="#{user.userEmail}" style="padding: 10px 5px;" />
-                                        
-                                    </div>
-                                    
-                <p:commandButton value="Sign In" action="#{user.sendData()}" />
-                </h:form>
-                                </p:layoutUnit>-->
+
+                <p:dialog header="Register New User" widgetVar="dlg2" modal="true" height="500" width="500">
+                    <h:form style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                        <div>
+                            <h:outputLabel for="username" value="Username"/>
+                            <p:inputText id="username" value="#{sendData.user.clientname}" style="padding: 10px 5px;" />
+                        </div>
+
+                        <div>
+                            <h:outputLabel for="password" value="Password"/>
+                            <p:inputText id="password" value="#{sendData.user.clientpassword}" style="padding: 10px 5px;" />
+                        </div>
+
+                        <div>
+                            <h:outputLabel for="sms-credits" value="Sms Credits"/>
+                            <p:inputText id="sms-credits" value="#{sendData.user.smsCredits}" style="padding: 10px 5px;" />
+                        </div>
+
+                        <div>
+                            <h:outputLabel for="organisation" value="Organization"/>
+                            <p:inputText id="organisation" value="#{sendData.user.organisation}" style="padding: 10px 5px;" />
+                        </div>
+
+                        <div>
+                            <h:outputLabel for="user-type" value="User Type"/>
+                            <p:inputText id="user-type" value="#{sendData.user.userType}" style="padding: 10px 5px;" />
+                        </div>
+
+                        <div>
+                            <h:outputLabel for="user-mobile" value="User Mobile"/>
+                            <p:inputText id="user-mobile" value="#{sendData.user.userMobile}" style="padding: 10px 5px;" />
+                        </div>
+
+                        <div>
+                            <h:outputLabel for="user-email" value="User Email"/>
+                            <p:inputText id="user-email" value="#{sendData.user.userEmail}" style="padding: 10px 5px;" />
+
+                        </div>
+
+                        <p:commandButton value="Submit" action="#{sendData.sendData()}" oncomplete="dlg2.close();" />
+                    </h:form>
+                </p:dialog>   
+
+
 
             </p:layout>
 
