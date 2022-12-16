@@ -47,7 +47,8 @@ public class User implements Serializable{
         
     }
 
-    public User(String clientname, String clientpassword, int smsCredits, String organisation, String userType, int userMobile, String userEmail) {
+    public User( String clientname, int user_id, String clientpassword, int smsCredits, String organisation, String userType, int userMobile, String userEmail) {
+        this.id = user_id;
         this.clientname = clientname;
         this.clientpassword = clientpassword;
         this.smsCredits = smsCredits;
@@ -57,8 +58,9 @@ public class User implements Serializable{
         this.userEmail = userEmail;
     }
     
-    public User(String username, String password, String clientname, String clientpassword, int smsCredits, String organisation, String userType, String userEmail, int userMobile) {
+    public User(String username, int user_id, String password, String clientname, String clientpassword, int smsCredits, String organisation, String userType, String userEmail, int userMobile) {
         this.username = username;
+        this.id = user_id;
         this.password = password;
         this.clientname = clientname;
         this.clientpassword = clientpassword;

@@ -14,11 +14,14 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import static ke.co.mspace.anto.User.database;
 import static ke.co.mspace.anto.User.ps;
+import org.primefaces.event.RowEditEvent;
 import util.Database;
 
 /**
@@ -28,8 +31,8 @@ import util.Database;
 @ManagedBean(name = "sendData")
 @ViewScoped
 public class SendData {
-    
-    @ManagedProperty(value="#{user}")
+
+    @ManagedProperty(value = "#{user}")
     private User user;
 
     public User getUser() {
@@ -39,16 +42,17 @@ public class SendData {
     public void setUser(User user) {
         this.user = user;
     }
-    
 
     static Database database = new Database();
     static ResultSet result;
     static ResultSet data;
     Connection connection;
     ArrayList<User> users = new ArrayList<>();
+    int user_id;
 
     @PostConstruct
     public void init() {
+        users.removeAll(users);
         connection = database.getConnection();
         String query = "SELECT * FROM client_info";
         Statement stmt;
@@ -56,7 +60,8 @@ public class SendData {
             stmt = connection.createStatement();
             data = stmt.executeQuery(query);
             while (data.next()) {
-                users.add(new User(data.getString("username"), data.getString("password"), data.getInt("sms_credits"), data.getString("organizer"), data.getString("user_type"), data.getInt("user_mobile"), data.getString("user_email")));
+                System.out.println(data.getInt("user_id"));
+                users.add(new User(data.getString("username"), data.getInt("user_id"), data.getString("password"), data.getInt("sms_credits"), data.getString("organizer"), data.getString("user_type"), data.getInt("user_mobile"), data.getString("user_email")));
             }
             System.out.println("number of rows :" + users.size());
             System.out.println("All users :" + users);
@@ -70,7 +75,7 @@ public class SendData {
         return users;
     }
 
-    public boolean sendData(){
+    public ArrayList<User> sendData() {
         boolean response = false;
         try {
             System.out.println("trying to send data..");
@@ -78,7 +83,7 @@ public class SendData {
             connection = database.getConnection();
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, user.getClientname());
-            ps.setString(2, user.getClientname());
+            ps.setString(2, user.getClientpassword());
             ps.setInt(3, user.getSmsCredits());
             ps.setString(4, user.getOrganisation());
             ps.setString(5, user.getUserType());
@@ -87,13 +92,86 @@ public class SendData {
             response = ps.execute();
             System.out.println("data sent successfully");
             System.out.println(response);
+            GrowlView growl = new GrowlView();
+            growl.showInfo("User Created", "User created successfully");
+            init();
             System.out.println(user.getClientname());
             System.out.println(user.getClientpassword());
-            
+
         } catch (SQLException ex) {
             System.out.println("Error is " + ex.getMessage().toUpperCase());
+            GrowlView growl = new GrowlView();
+            growl.showInfo("Failed", "User not Created");
         }
-        return response;
+        return users;
+    }
+
+    public String delete(String rowIndex) {
+        boolean response = false;
+
+        try {
+            System.out.println(rowIndex);
+
+            String query = "DELETE FROM client_info WHERE username = ?";
+            connection = database.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, rowIndex);
+            response = ps.execute();
+            init();
+
+            System.out.println(response);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SendData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rowIndex;
+    }
+
+    public int setUserId(int id) {
+        System.out.println(id);
+        user_id = id;
+        return user_id;
+    }
+
+    public ArrayList<User> edit() {
+//        init();
+//        try {
+//            System.out.println("trying to send data..");
+////            String quer = "UPDATE client_info SET username = ?, password = ?, sms_credits = ?, organizer = ?, user_type = ?, user_mobile = ?, user_email = ?  WHERE username = ?";
+//            String query = "UPDATE client_info SET username = ?, password = ?, sms_credits = ?, organizer = ?, user_type = ?, user_mobile = ?, user_email = ? " + " WHERE user_id = ?";
+////            String que = "UPDATE client_info SET ( username, password, sms_credits, organizer, user_type, user_mobile, user_email ) VALUES ( ?,?,?,?,?,?,? ) WHERE username = ?";
+//            connection = database.getConnection();
+//            PreparedStatement ps = connection.prepareStatement(query);
+//            ps.setString(1, user.getClientname());
+//            ps.setString(2, user.getClientpassword());
+//            ps.setInt(3, user.getSmsCredits());
+//            ps.setString(4, user.getOrganisation());
+//            ps.setString(5, user.getUserType());
+//            ps.setInt(6, user.getUserMobile());
+//            ps.setString(7, user.getUserEmail());
+//            ps.setInt(8, user_id);
+        System.out.println(user_id);
+//            ps.executeUpdate();
+//            GrowlView growl = new GrowlView();
+//            growl.showInfo("User Created", "User created successfully");
+//            init();
+//
+//        } catch (SQLException ex) {
+//            System.out.println("Error is " + ex.getMessage().toUpperCase());
+//            GrowlView growl = new GrowlView();
+//            growl.showInfo("Failed", "User not Created");
+//        }
+        return users;
+    }
+
+    public void onRowEdit(RowEditEvent<User> event) {
+        FacesMessage msg = new FacesMessage("Product Edited", String.valueOf(event.getObject().getCode()));
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onRowCancel(RowEditEvent<User> event) {
+        FacesMessage msg = new FacesMessage("Edit Cancelled", String.valueOf(event.getObject().getCode()));
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
 }

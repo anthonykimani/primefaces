@@ -42,33 +42,106 @@
                     </p:menu>
                 </p:layoutUnit>
 
-                <p:layoutUnit position="center">
-                    <h:form>
+<!--                <p:layoutUnit position="center">
+                    <h:form id="fm3">
                         <p:commandButton value="Register User" type="button" onclick="PF('dlg2').show();" /> 
                         <div class="card">
-                            <p:dataTable var="product" value="#{sendData.users}">
+                            <p:dataTable var="product" value="#{sendData.users}" id="datatable"  rowIndexVar="row">
                                 <p:column headerText="UserName">
-                                    <h:outputText value="#{product.clientname}" />
+                                    <h:outputText value="#{product.clientname}"/>
                                 </p:column>
 
                                 <p:column headerText="Password">
-                                    <h:outputText value="#{product.clientpassword}" />
+                                    <h:outputText value="#{product.clientpassword}"/>
                                 </p:column>
 
                                 <p:column headerText="Organisation">
-                                    <h:outputText value="#{product.organisation}" />
+                                    <h:outputText value="#{product.organisation}"/>
                                 </p:column>
 
                                 <p:column headerText="Email">
-                                    <h:outputText value="#{product.userEmail}" />
+                                    <h:outputText value="#{product.userEmail}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton value="Delete" action="#{sendData.delete(product.clientname)}" update="@all" />
+                                    <p:commandButton value="Edit" type="button"  action="#{sendData.setUserId(product.user_id)}" onclick="PF('dlg3').show();" />
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </h:form>
+                </p:layoutUnit>-->
+
+                <p:layoutUnit position="center">
+                    <h:form id="fm3">
+                        <p:growl id="msgs" showDetail="true"/>
+                        <p:commandButton value="Register User" type="button" onclick="PF('dlg2').show();" /> 
+                        <div class="card">
+                            <h5>Row Editing</h5>
+                            <p:dataTable id="datatable" var="product" value="#{sendData.users}" rowIndexVar="row" editable="true"
+                                         style="margin-bottom:20px">
+                                <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" update=":fm3:msgs"/>
+                                <p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" update=":fm3:msgs"/>
+
+                                <p:column headerText="Clientname">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{product.clientname}"/>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText id="modelInput" value="#{product.clientname}" style="width:100%"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Client Password">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{product.clientpassword}"/>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{product.clientpassword}" style="width:100%" label="Name"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                
+                                <p:column headerText="Organisation">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{product.organisation}"/>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{product.organisation}" style="width:100%" label="Name"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Price">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{product.userEmail}">
+                                                <f:convertNumber type="currency" currencySymbol="$"/>
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{product.userEmail}" style="width:100%" label="Email" />
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column style="width:6rem">
+                                    <p:rowEditor/>
                                 </p:column>
                             </p:dataTable>
                         </div>
                     </h:form>
                 </p:layoutUnit>
 
-                <p:dialog header="Register New User" widgetVar="dlg2" modal="true" height="500" width="500">
-                    <h:form style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                <p:dialog header="Register New User" id="dialog" widgetVar="dlg2" modal="true" height="500" width="500"  showEffect="size" hideEffect="size">
+
+                    <h:form style="display:flex; flex-direction:column; justify-content:center; align-items:center;" id="fm2">
+                        <div>
+                            <p:growl id="gr1" showDetail="true" />
+                        </div>
                         <div>
                             <h:outputLabel for="username" value="Username"/>
                             <p:inputText id="username" value="#{sendData.user.clientname}" style="padding: 10px 5px;" />
@@ -105,10 +178,55 @@
 
                         </div>
 
-                        <p:commandButton value="Submit" action="#{sendData.sendData()}" oncomplete="dlg2.close();" />
+                        <p:commandButton value="Submit" action="#{sendData.sendData()}" update="@all" oncomplete="dlg2.close();"  />
+
                     </h:form>
                 </p:dialog>   
+                <p:dialog header="Header" widgetVar="dlg3" minHeight="40" width="350" showEffect="fade" modal="true">
+                    <h:form style="display:flex; flex-direction:column; justify-content:center; align-items:center;" id="fm4">
+                        <div>
+                            <p:growl id="gr3" showDetail="true" />
+                        </div>
+                        <div>
+                            <h:outputLabel for="username" value="Username"/>
+                            <p:inputText id="username" value="#{sendData.user.clientname}" style="padding: 10px 5px;" />
+                        </div>
 
+                        <div>
+                            <h:outputLabel for="password" value="Password"/>
+                            <p:inputText id="password" value="#{sendData.user.clientpassword}" style="padding: 10px 5px;" />
+                        </div>
+
+                        <div>
+                            <h:outputLabel for="sms-credits" value="Sms Credits"/>
+                            <p:inputText id="sms-credits" value="#{sendData.user.smsCredits}" style="padding: 10px 5px;" />
+                        </div>
+
+                        <div>
+                            <h:outputLabel for="organisation" value="Organization"/>
+                            <p:inputText id="organisation" value="#{sendData.user.organisation}" style="padding: 10px 5px;" />
+                        </div>
+
+                        <div>
+                            <h:outputLabel for="user-type" value="User Type"/>
+                            <p:inputText id="user-type" value="#{sendData.user.userType}" style="padding: 10px 5px;" />
+                        </div>
+
+                        <div>
+                            <h:outputLabel for="user-mobile" value="User Mobile"/>
+                            <p:inputText id="user-mobile" value="#{sendData.user.userMobile}" style="padding: 10px 5px;" />
+                        </div>
+
+                        <div>
+                            <h:outputLabel for="user-email" value="User Email"/>
+                            <p:inputText id="user-email" value="#{sendData.user.userEmail}" style="padding: 10px 5px;" />
+
+                        </div>
+
+                        <p:commandButton value="Submit"  action="#{sendData.edit()}" update="@all" oncomplete="dlg3.close();"  />
+
+                    </h:form>
+                </p:dialog>
 
 
             </p:layout>
