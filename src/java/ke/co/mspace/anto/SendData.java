@@ -92,17 +92,20 @@ public class SendData {
             response = ps.execute();
             System.out.println("data sent successfully");
             System.out.println(response);
+            init();
             GrowlView growl = new GrowlView();
             growl.showInfo("User Created", "User created successfully");
-            init();
+
             System.out.println(user.getClientname());
             System.out.println(user.getClientpassword());
+            
 
         } catch (SQLException ex) {
             System.out.println("Error is " + ex.getMessage().toUpperCase());
-            GrowlView growl = new GrowlView();
-            growl.showInfo("Failed", "User not Created");
+//            GrowlView growl = new GrowlView();
+//            growl.showInfo("Failed", "User not Created");
         }
+        clearInput();
         return users;
     }
 
@@ -117,8 +120,11 @@ public class SendData {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, rowIndex);
             response = ps.execute();
-            init();
 
+            
+            init();
+            GrowlView growl = new GrowlView();
+            growl.showError("Deleted", "User deleted successfully");
             System.out.println(response);
 
         } catch (SQLException ex) {
@@ -164,14 +170,53 @@ public class SendData {
         return users;
     }
 
-    public void onRowEdit(RowEditEvent<User> event) {
-        FacesMessage msg = new FacesMessage("Product Edited", String.valueOf(event.getObject().getCode()));
+    public void onRowEdit(RowEditEvent event) {
+        try {
+            User user = (User) event.getObject();
+
+            user.setClientname(user.getClientname());
+            user.setClientpassword(user.getClientpassword());
+            String query = "UPDATE client_info SET username = ?, password = ?, sms_credits = ?, organizer = ?, user_type = ?, user_mobile = ?, user_email = ? " + " WHERE user_id = ?";
+            connection = database.getConnection();
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, user.getClientname());
+            ps.setString(2, user.getClientpassword());
+            ps.setInt(3, user.getSmsCredits());
+            ps.setString(4, user.getOrganisation());
+            ps.setString(5, user.getUserType());
+            ps.setInt(6, user.getUserMobile());
+            ps.setString(7, user.getUserEmail());
+            ps.setInt(8, user.getId());
+            ps.executeUpdate();
+            user.getClientname();
+            init();
+
+            System.out.println(user.getClientname());
+            System.out.println(user.getClientpassword());
+            System.out.println(user.getSmsCredits());
+            System.out.println(user.getId());
+
+            FacesMessage msg = new FacesMessage("User Edited", String.valueOf(user.getClientname()));
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } catch (SQLException ex) {
+            Logger.getLogger(SendData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edit Cancelled", String.valueOf(user.getClientname()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public void onRowCancel(RowEditEvent<User> event) {
-        FacesMessage msg = new FacesMessage("Edit Cancelled", String.valueOf(event.getObject().getCode()));
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+    public void clearInput() {
+        user.setClientname("");
+        user.setClientpassword("");
+        user.setOrganisation("");
+        user.setPassword("");
+        user.setSmsCredits(0);
+        user.setUserEmail("");
+        user.setUserMobile(0);
+        user.setUserType("");
     }
 
 }

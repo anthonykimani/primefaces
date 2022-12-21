@@ -42,35 +42,9 @@
                     </p:menu>
                 </p:layoutUnit>
 
-<!--                <p:layoutUnit position="center">
-                    <h:form id="fm3">
-                        <p:commandButton value="Register User" type="button" onclick="PF('dlg2').show();" /> 
-                        <div class="card">
-                            <p:dataTable var="product" value="#{sendData.users}" id="datatable"  rowIndexVar="row">
-                                <p:column headerText="UserName">
-                                    <h:outputText value="#{product.clientname}"/>
-                                </p:column>
 
-                                <p:column headerText="Password">
-                                    <h:outputText value="#{product.clientpassword}"/>
-                                </p:column>
 
-                                <p:column headerText="Organisation">
-                                    <h:outputText value="#{product.organisation}"/>
-                                </p:column>
-
-                                <p:column headerText="Email">
-                                    <h:outputText value="#{product.userEmail}"/>
-                                </p:column>
-                                <p:column>
-                                    <p:commandButton value="Delete" action="#{sendData.delete(product.clientname)}" update="@all" />
-                                    <p:commandButton value="Edit" type="button"  action="#{sendData.setUserId(product.user_id)}" onclick="PF('dlg3').show();" />
-                                </p:column>
-                            </p:dataTable>
-                        </div>
-                    </h:form>
-                </p:layoutUnit>-->
-
+                
                 <p:layoutUnit position="center">
                     <h:form id="fm3">
                         <p:growl id="msgs" showDetail="true"/>
@@ -79,8 +53,8 @@
                             <h5>Row Editing</h5>
                             <p:dataTable id="datatable" var="product" value="#{sendData.users}" rowIndexVar="row" editable="true"
                                          style="margin-bottom:20px">
-                                <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" update=":fm3:msgs"/>
-                                <p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" update=":fm3:msgs"/>
+                                <p:ajax event="rowEdit" listener="#{sendData.onRowEdit}" update=":fm3:msgs"/>
+                                <p:ajax event="rowEditCancel" listener="#{sendData.onRowCancel}" update=":fm3:msgs"/>
 
                                 <p:column headerText="Clientname">
                                     <p:cellEditor>
@@ -104,6 +78,18 @@
                                     </p:cellEditor>
                                 </p:column>
                                 
+                                <p:column headerText="SmsCredits">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{product.smsCredits}">
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{product.smsCredits}" style="width:100%" label="Number" />
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                
                                 <p:column headerText="Organisation">
                                     <p:cellEditor>
                                         <f:facet name="output">
@@ -114,8 +100,31 @@
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
+                                
+                                <p:column headerText="User Type">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{product.userType}"/>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{product.userType}" style="width:100%" label="Name"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                                
+                                <p:column headerText="Mobile">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{product.userMobile}">
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{product.userMobile}" style="width:100%" label="Mobile" />
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
 
-                                <p:column headerText="Price">
+                                <p:column headerText="Email">
                                     <p:cellEditor>
                                         <f:facet name="output">
                                             <h:outputText value="#{product.userEmail}">
@@ -124,12 +133,18 @@
                                         </f:facet>
                                         <f:facet name="input">
                                             <p:inputText value="#{product.userEmail}" style="width:100%" label="Email" />
+                                            <!--<p:inputNumber value="#{product.userEmail}" style="width:100%" label="Email"/>-->
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
+                                
 
-                                <p:column style="width:6rem">
+                                <p:column headerText="Edit" style="width:3rem">
                                     <p:rowEditor/>
+                                </p:column>
+                                
+                                <p:column headerText="Delete" style="width:6rem">
+                                    <p:commandButton value="Delete" action="#{sendData.delete(product.clientname)}" update="@all" />
                                 </p:column>
                             </p:dataTable>
                         </div>

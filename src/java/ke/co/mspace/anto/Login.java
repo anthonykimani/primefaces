@@ -70,7 +70,7 @@ public class Login {
         } else {
             System.out.println("user not logged in ");
             GrowlView growl = new GrowlView();
-            growl.showError();
+            growl.showError("Authentication Failed", "User not Found");
             System.out.println("step by step");
 //            FacesContext.getCurrentInstance().
 //                addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "done", "done"));

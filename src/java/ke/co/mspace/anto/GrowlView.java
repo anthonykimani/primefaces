@@ -25,8 +25,8 @@ public class GrowlView {
         System.out.println("error");
     }
 
-    public void showError() {
-        addMessage(FacesMessage.SEVERITY_ERROR, "Sign in Error", "Username or Password not found");
+    public void showError(String message, String message_info) {
+        addMessage(FacesMessage.SEVERITY_ERROR, message, message_info);
     }
 
     public void showInfo(String message, String message_info) {
